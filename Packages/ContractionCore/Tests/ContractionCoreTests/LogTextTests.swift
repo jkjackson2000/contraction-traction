@@ -218,6 +218,11 @@ final class LogTextParseTests: XCTestCase {
         let offsetOnly = LogText.parse("Time zone: Mars/Olympus (UTC+05:30)\n" + lines,
                                        defaultTimeZone: TZ.tokyo, now: now)
         XCTAssertEqual(offsetOnly.records.first?.start, at(2026, 10, 18, 14, 10, 0, TZ.kolkata))
+        // Invisible marks pasted from right-to-left chats must not break the
+        // identifier (a fixed-offset fallback would be wrong after DST ends).
+        let marked = LogText.parse("Time zone: America/Chicago\u{200E} (UTC-05:00)\n2026-11-02 9:00 AM · 50s",
+                                   defaultTimeZone: TZ.tokyo, now: now.addingTimeInterval(30 * 86_400))
+        XCTAssertEqual(marked.records.first?.start, at(2026, 11, 2, 9, 0))
         // "Etc/GMT+5" is UTC-5 by POSIX convention: the identifier wins.
         let etc = LogText.parse("Time zone: Etc/GMT+5 (UTC-05:00)\n" + lines, defaultTimeZone: TZ.tokyo, now: now)
         XCTAssertEqual(etc.records.first?.start, at(2026, 10, 18, 14, 10, 0, TimeZone(secondsFromGMT: -18_000)!))
@@ -281,6 +286,7 @@ final class LogTextParseTests: XCTestCase {
             "2026-10-18 2:10 PM · soon",
             "2026-10-18 2:10 PM · 1m back pain",
             "2026-10-18 2:10 PM · 1.5m",
+            "2026-10-18 2:10 PM 10 - 12 min apart", // chat text: unitless number after bare space
             "2026-10-18",
             "2026-10-18 99999999999999999999:00 · 9999999999999999999999s",
         ]

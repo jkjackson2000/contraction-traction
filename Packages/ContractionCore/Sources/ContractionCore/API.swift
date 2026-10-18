@@ -1,6 +1,6 @@
 // Public contract for ContractionCore. The app depends only on what is
-// declared here. Signatures are fixed; bodies marked `fatalError` are to be
-// implemented in separate files (this file keeps the types and docs).
+// declared here: types, signatures, and documented behavior. Implementations
+// live in LogText.swift, Merge.swift, Stats.swift, and QuickLog.swift.
 //
 // Pure value logic: no SwiftData, no UIKit, no I/O. Every function that
 // depends on the current time takes `now` explicitly so it is testable.
@@ -67,7 +67,9 @@ public enum Limits {
 /// - Duration: `Ns` under a minute, else `Nm SSs` (seconds zero-padded),
 ///   prefixed with `~` when approximate.
 /// - In-progress contractions are omitted.
-/// - Newlines in notes become spaces.
+/// - Newlines in notes become spaces; notes are trimmed.
+/// - A line whose wall-clock time occurs twice (DST fall-back hour) carries
+///   an explicit UTC offset after the time so it round-trips.
 ///
 /// Parse rules (lenient, so hand-typed or lightly edited logs still work):
 /// - Lines that do not start with a `yyyy-MM-dd` date are ignored (headers,
@@ -75,8 +77,9 @@ public enum Limits {
 /// - Time: `h:mm[:ss] AM/PM` (case-insensitive) or 24-hour `H:mm[:ss]`. Date
 ///   and time may be separated by a space or `T`.
 /// - Optional per-line UTC offset after the time (`-05:00`, `-0500`, `Z`)
-///   overrides the zone. Otherwise the `Time zone:` header (identifier first,
-///   else the `UTC±HH:MM` in parentheses), otherwise `defaultTimeZone`.
+///   overrides the zone. Otherwise the nearest `Time zone:` header above the
+///   line (identifier first, else the `UTC±HH:MM` in parentheses), otherwise
+///   `defaultTimeZone`.
 /// - Field separators: `·`, `•`, `|`, or a tab, with optional surrounding
 ///   whitespace.
 /// - Duration: `58s`, `1m`, `1m 05s`, `1m5s`, `1:05`, `90` (bare = seconds);
@@ -171,9 +174,12 @@ public struct ImportPlan: Sendable, Equatable {
 }
 
 /// Matching rules:
-/// 1. Collapse incoming against itself first with the same pairing rule
-///    (keep the earlier-listed record).
-/// 2. Two records are candidates when their [start, end] ranges overlap, or
+/// 1. Collapse incoming against itself first: a record starting in the same
+///    second as an earlier-listed one is a copy (e.g. a log pasted twice).
+///    Deliberately narrower than rule 2, which would drop real contractions
+///    that sit close together within one log.
+/// 2. Two records are candidates when their [start, end] ranges share time
+///    (touching is not enough), or
 ///    |Δstart| ≤ `exactTolerance` (both exact) / `approximateTolerance`
 ///    (either approximate). An in-progress existing record spans
 ///    [start, now].
@@ -194,7 +200,8 @@ public enum Merge {
 
     /// The record the existing row becomes under `resolution`. Keeps
     /// `existing.id`. Notes: with `useTheirs`, the result's note is the
-    /// non-empty one, or "mine; theirs" when both are non-empty and differ.
+    /// non-empty one; if one already contains the other, the longer one;
+    /// otherwise "mine; theirs".
     /// With `keepMine`, returns `existing` unchanged.
     public static func apply(_ resolution: MatchResolution,
                              to match: ImportPlan.Match) -> ContractionRecord {

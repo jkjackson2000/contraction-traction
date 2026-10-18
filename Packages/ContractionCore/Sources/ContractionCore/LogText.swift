@@ -382,7 +382,7 @@ enum LogTextImpl {
             let idStart = i
             while !atEnd, !Self.isSpace(v(i)), v(i) != 0x28 /* ( */ { i += 1 }
             var idView = String.UnicodeScalarView()
-            idView.append(contentsOf: s[idStart..<i])
+            idView.append(contentsOf: s[idStart..<i].filter { !Self.isInvisible($0.value) })
             let identifier = String(idView)
 
             // Prefer the offset after the identifier ("Etc/GMT+5" is UTC-5).
@@ -461,9 +461,11 @@ enum LogTextImpl {
             let offset = lineOffset()
 
             // Time/duration separator.
-            guard fieldSeparator(allowBareSpace: true) else { return nil }
+            guard let explicitSeparator = fieldSeparator(allowBareSpace: true) else { return nil }
 
-            guard let parsedDuration = durationField() else { return nil }
+            // A unitless number after bare whitespace is too likely to be chat
+            // text ("2:10 PM 10 - 12 min apart"); require `s`/`m`/`:` there.
+            guard let parsedDuration = durationField(allowBareSeconds: explicitSeparator) else { return nil }
             let (duration, approximate) = parsedDuration
 
             // Duration/note separator, or end of line.
@@ -549,23 +551,29 @@ enum LogTextImpl {
             return hours * 3600 + minutes * 60
         }
 
-        /// A field separator with optional whitespace around it. A spaced dash
-        /// also counts; plain whitespace counts when `allowBareSpace`.
-        private mutating func fieldSeparator(allowBareSpace: Bool) -> Bool {
+        /// A field separator with optional whitespace around it; a spaced dash
+        /// also counts. Plain whitespace counts when `allowBareSpace`. Returns
+        /// true for an explicit separator, false for bare whitespace, nil if
+        /// there is none.
+        private mutating func fieldSeparator(allowBareSpace: Bool) -> Bool? {
             let spaces = skipSpaces()
-            if Self.isSeparator(v(i)) && !atEnd {
+            var explicit = true
+            if Self.isSeparator(v(i)) {
                 i += 1
             } else if Self.isDash(v(i)), spaces > 0, Self.isSpace(v(i + 1)) {
                 i += 1
-            } else if !(allowBareSpace && spaces > 0) {
-                return false
+            } else if allowBareSpace && spaces > 0 {
+                explicit = false
+            } else {
+                return nil
             }
             while !atEnd, Self.isSpace(v(i)) || Self.isInvisible(v(i)) || v(i) == 0x09 { i += 1 }
-            return true
+            return explicit
         }
 
-        /// `58s`, `1m`, `1m 05s`, `1m5s`, `1 min 5 sec`, `1:05`, `90`; `~` prefix.
-        private mutating func durationField() -> (Int, Bool)? {
+        /// `58s`, `1m`, `1m 05s`, `1m5s`, `1 min 5 sec`, `1:05`, `90` (only
+        /// when `allowBareSeconds`); `~` prefix.
+        private mutating func durationField(allowBareSeconds: Bool) -> (Int, Bool)? {
             var approximate = false
             if Self.isTilde(v(i)) {
                 approximate = true
@@ -583,6 +591,7 @@ enum LogTextImpl {
             }
             let unit = letters()
             if unit.isEmpty {
+                guard allowBareSeconds else { return nil }
                 i = afterNumber
                 return (a, approximate)
             }

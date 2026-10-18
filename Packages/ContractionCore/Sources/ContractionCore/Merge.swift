@@ -1,17 +1,16 @@
 // Import planning: match incoming records (a pasted partner log) against the
 // existing list. See `Merge` in API.swift for the rules.
 //
-// Self-collapse (rule 1) deliberately uses a narrower test than rule 2: two
-// incoming records collapse only when their starts are within 1 s. Copies of
-// the same exported entry (a log pasted twice, or shared again later with a
-// duration or note edited) always share their start, and no two real
-// contractions start in the same second. The rule-2 test (overlap, or within
-// 45 s / 120 s) would also merge distinct entries of a single log: approximate
-// entries two minutes apart in transition, or a quick-logged entry inside a
-// long one whose timer was left running. That silently drops a contraction,
-// so it is not used here. Pairing is still closest-first, keeping the
-// earlier-listed record, and a kept record may absorb several copies, so a
-// log pasted three times still yields one of each.
+// Self-collapse (rule 1) deliberately uses a narrower test than rule 2: an
+// incoming record collapses into an earlier-listed one only when both start
+// at the same second. Copies of the same exported entry (a log pasted twice,
+// or shared again later with a duration or note edited) always share their
+// start, and no two real contractions start in the same second. The rule-2
+// test (overlap, or within 45 s / 120 s) would also merge distinct entries of
+// a single log: approximate entries two minutes apart in transition, or a
+// quick-logged entry inside a long one whose timer was left running. That
+// silently drops a contraction, so it is not used here. A kept record absorbs
+// every copy, so a log pasted three times still yields one of each.
 
 import Foundation
 
@@ -47,7 +46,7 @@ enum MergeImpl {
 
     static func plan(existing: [ContractionRecord], incoming: [ContractionRecord],
                      now: Date) -> ImportPlan {
-        let (kept, collapsedCount) = collapse(incoming, now: now)
+        let (kept, collapsedCount) = collapse(incoming)
         let existingSpans = existing.map { Span($0, now: now) }
         let keptSpans = kept.map { Span($0, now: now) }
 
@@ -131,36 +130,15 @@ enum MergeImpl {
 
     // MARK: - Helpers
 
-    private static let selfDuplicateTolerance: TimeInterval = 1
-
-    /// Rule 1 (see the file comment). Returns kept incoming records, in input
-    /// order, and the number collapsed into an earlier-listed copy.
-    private static func collapse(_ incoming: [ContractionRecord], now: Date) -> ([ContractionRecord], Int) {
-        guard incoming.count > 1 else { return (incoming, 0) }
-        let spans = incoming.map { Span($0, now: now) }
-        let order = incoming.indices.sorted { (spans[$0].start, $0) < (spans[$1].start, $1) }
-
-        var pairs: [(distance: Double, first: Int, second: Int)] = []
-        for a in order.indices {
-            let x = order[a]
-            var b = a + 1
-            while b < order.count {
-                let y = order[b]
-                let distance = spans[y].start - spans[x].start
-                if distance > selfDuplicateTolerance { break }
-                pairs.append((distance, min(x, y), max(x, y)))
-                b += 1
-            }
-        }
-        pairs.sort { ($0.distance, $0.first, $0.second) < ($1.distance, $1.first, $1.second) }
-
-        var collapsed = [Bool](repeating: false, count: incoming.count)
-        var count = 0
-        for pair in pairs where !collapsed[pair.first] && !collapsed[pair.second] {
-            collapsed[pair.second] = true
-            count += 1
-        }
-        return (incoming.indices.filter { !collapsed[$0] }.map { incoming[$0] }, count)
+    /// Rule 1 (see the file comment): a record whose start equals an
+    /// earlier-listed record's start is a copy of it. Returns kept records,
+    /// in input order, and the number collapsed. Linear time, so even a
+    /// pathological paste of thousands of copies stays fast.
+    private static func collapse(_ incoming: [ContractionRecord]) -> ([ContractionRecord], Int) {
+        var seen = Set<Date>()
+        seen.reserveCapacity(incoming.count)
+        let kept = incoming.filter { seen.insert($0.start).inserted }
+        return (kept, incoming.count - kept.count)
     }
 
     /// Start and duration within 1 s, same approximate flag, and the same
@@ -186,8 +164,9 @@ enum MergeImpl {
     private static func combinedNote(mine: String, theirs: String) -> String {
         let a = LogTextImpl.normalizedNote(mine)
         let b = LogTextImpl.normalizedNote(theirs)
-        if b.isEmpty || a == b { return mine }
-        if a.isEmpty { return theirs }
+        // Containment keeps repeated A→B→A rounds from growing the note.
+        if b.isEmpty || a.contains(b) { return mine }
+        if a.isEmpty || b.contains(a) { return theirs }
         return mine.trimmingCharacters(in: .whitespacesAndNewlines) + "; "
             + theirs.trimmingCharacters(in: .whitespacesAndNewlines)
     }

@@ -140,7 +140,7 @@ final class MergeTests: XCTestCase {
         XCTAssertEqual(plan3.additions, [])
     }
 
-    // Self-collapse only merges copies (starts within 1 s). Distinct entries
+    // Self-collapse only merges copies (same start second). Distinct entries
     // of one log must survive even when they look alike: approximate ones
     // 100 s apart, or a quick-logged one inside a long, mis-stopped one.
     func testSelfCollapseOnlyMergesCopies() {
@@ -153,9 +153,19 @@ final class MergeTests: XCTestCase {
         // collapses, keeping the earlier-listed one.
         let first = rec(t(0), 60)
         let edited = rec(t(0), 75, note: "edited")
-        let plan = Merge.plan(existing: [], incoming: [first, edited, rec(t(1), 60)], now: later)
+        let plan = Merge.plan(existing: [], incoming: [first, edited, rec(t(0), 60)], now: later)
         XCTAssertEqual(plan.collapsedIncomingCount, 2)
         XCTAssertEqual(plan.additions.map(\.id), [first.id])
+    }
+
+    // A pathological paste (thousands of copies) must not freeze the app.
+    func testSelfCollapseOfManyCopiesIsFast() {
+        let copies = (0..<20_000).map { _ in rec(t(0), 60) }
+        let clock = ContinuousClock()
+        var plan = ImportPlan(additions: [], matches: [], identicalCount: 0, collapsedIncomingCount: 0)
+        let elapsed = clock.measure { plan = Merge.plan(existing: [], incoming: copies, now: later) }
+        XCTAssertEqual(plan.collapsedIncomingCount, 19_999)
+        XCTAssertLessThan(elapsed, .seconds(1))
     }
 
     // She shares to him, he shares back: nothing may come back as "new".
@@ -224,6 +234,9 @@ final class MergeTests: XCTestCase {
         XCTAssertEqual(applied("", "theirs").note, "theirs")
         XCTAssertEqual(applied("same", "same").note, "same")
         XCTAssertEqual(applied("mine", "theirs").note, "mine; theirs")
+        // Sharing back and forth must not keep appending the same notes.
+        XCTAssertEqual(applied("back pain; tired", "tired").note, "back pain; tired")
+        XCTAssertEqual(applied("tired", "back pain; tired").note, "back pain; tired")
 
         let existing = rec(t(0), 60, approx: true, note: "m")
         let match = ImportPlan.Match(existing: existing, incoming: rec(t(10), 70, note: "t"),
