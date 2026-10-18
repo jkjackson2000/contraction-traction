@@ -56,6 +56,7 @@ targets:
           UIColorName: LaunchBackground
         UIRequiredDeviceCapabilities: [arm64]
         UISupportedInterfaceOrientations: [UIInterfaceOrientationPortrait]
+        UIRequiresFullScreen: true
         UIStatusBarStyle: UIStatusBarStyleDefault
     entitlements:
       path: App/ContractionTraction.entitlements
