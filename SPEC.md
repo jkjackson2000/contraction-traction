@@ -160,7 +160,7 @@ count.
 ### First launch
 
 One disclaimer screen: "Timing tool, not medical advice. Follow your
-provider's instructions. In an emergency call 911." Then **Got it**.
+provider's instructions. In an emergency, call 911 or your local emergency number." Then **Got it**.
 
 ## Share text format
 

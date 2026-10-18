@@ -5,14 +5,14 @@ struct HomeView: View {
     @Environment(ContractionStore.self) private var store
     @Binding var importRequest: ImportRequest?
     @AppStorage(SettingsKey.keepScreenAwake, store: .shared) private var keepScreenAwake = true
+    /// One sheet slot, so an opened file cleanly replaces whatever is up.
     @State private var sheet: HomeSheet?
-    @State private var editing: ContractionRecord?
 
     var body: some View {
         NavigationStack {
             VStack(spacing: 0) {
                 TimerPanel { sheet = .quickLog }
-                ContractionList { editing = $0 }
+                ContractionList { sheet = .edit($0) }
             }
             .background(Theme.background.ignoresSafeArea())
             .navigationTitle("Contractions")
@@ -35,17 +35,19 @@ struct HomeView: View {
             .overlay(alignment: .bottom) { UndoToast() }
         }
         .sheet(item: $sheet) { sheet in
-            switch sheet {
-            case .quickLog: QuickLogSheet()
-            case .settings: SettingsView()
-            case .importLog(let request): ImportSheet(initialText: request?.text)
+            Group {
+                switch sheet {
+                case .quickLog: QuickLogSheet()
+                case .settings: SettingsView()
+                case .importLog(let request): ImportSheet(initialText: request?.text)
+                case .edit(let record): EditSheet(original: record)
+                }
             }
+            .modifier(SaveErrorAlert(store: store))
         }
-        .sheet(item: $editing) { EditSheet(original: $0) }
         .onChange(of: importRequest?.id, initial: true) {
             guard let request = importRequest else { return }
             importRequest = nil
-            editing = nil
             sheet = .importLog(request)
         }
         #if DEBUG
@@ -66,12 +68,14 @@ struct HomeView: View {
 private enum HomeSheet: Identifiable {
     case quickLog, settings
     case importLog(ImportRequest?)
+    case edit(ContractionRecord)
 
     var id: String {
         switch self {
         case .quickLog: "quickLog"
         case .settings: "settings"
         case .importLog(let request): "import-\(request?.id.uuidString ?? "")"
+        case .edit(let record): "edit-\(record.id.uuidString)"
         }
     }
 }

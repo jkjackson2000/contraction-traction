@@ -25,6 +25,11 @@ struct ValidationError: LocalizedError {
     var errorDescription: String? { message }
 }
 
+/// A change that couldn't be saved. It was rolled back, so nothing changed.
+struct SaveError: LocalizedError {
+    var errorDescription: String? { "Couldn't save your change, so nothing was changed. Try again." }
+}
+
 /// The single place that mutates contractions. The UI, the Live Activity
 /// intent, and the Live Activity itself all go through here, so they never
 /// drift. Views read the derived, value-typed `records`/`sections`.
@@ -42,17 +47,28 @@ final class ContractionStore {
     private(set) var completedCount = 0
     private(set) var undo: UndoAction?
     private(set) var isLiveActivityActive = false
+    /// A start, stop, delete, or undo that couldn't be saved. Shown by an
+    /// alert at the app root.
+    private(set) var lastError: String?
+    /// Set when the saved store couldn't be opened. The app shows a blocking
+    /// screen rather than carrying on with an empty list.
+    let loadError: String?
 
-    @ObservationIgnored private let container: ModelContainer
-    @ObservationIgnored private var context: ModelContext
+    @ObservationIgnored private let container: ModelContainer?
+    @ObservationIgnored private var context: ModelContext?
     @ObservationIgnored private var models: [UUID: Contraction] = [:]
     @ObservationIgnored private var exportCache: String?
     @ObservationIgnored private var activityTask: Task<Void, Never>?
 
     init(inMemory: Bool = false) {
-        container = Self.makeContainer(inMemory: inMemory)
-        context = ModelContext(container)
-        context.autosaveEnabled = false
+        do {
+            container = try Self.makeContainer(inMemory: inMemory)
+            loadError = nil
+        } catch {
+            container = nil
+            loadError = error.localizedDescription
+        }
+        context = container.map(Self.makeContext)
         isLiveActivityActive = LiveActivityController.current != nil
         reload()
     }
@@ -66,6 +82,12 @@ final class ContractionStore {
     /// sorted newest first, so this only walks the recent prefix.
     func recent(since cutoff: Date) -> [ContractionRecord] {
         Array(records.prefix { $0.start >= cutoff }.reversed())
+    }
+
+    /// Start-to-previous-start for display; nil across a gap between
+    /// sessions, which isn't a useful interval.
+    func displayInterval(for id: UUID) -> TimeInterval? {
+        intervals[id].flatMap { $0 < LiveActivityController.idleTimeout ? $0 : nil }
     }
 
     /// Plain-text share of every completed contraction (cached until the
@@ -112,7 +134,7 @@ final class ContractionStore {
     func startContraction(at date: Date = .now) {
         guard inProgress == nil else { return }
         insert(ContractionRecord(start: date, duration: nil))
-        commit(undo: nil, allowActivityStart: true)
+        commitOrReport(undo: nil, allowActivityStart: true)
     }
 
     func stopContraction(at date: Date = .now) {
@@ -123,13 +145,14 @@ final class ContractionStore {
         // Left running past the limit: keep it, but it is an estimate now.
         if elapsed > Limits.maxDuration { stopped.isApproximate = true }
         model.apply(stopped)
-        commit(undo: UndoAction(message: "Saved · \(Format.duration(stopped.duration ?? 0, approximate: stopped.isApproximate))",
-                                remove: [], restore: [current]))
+        commitOrReport(undo: UndoAction(message: "Saved · \(Format.duration(stopped.duration ?? 0, approximate: stopped.isApproximate))",
+                                        remove: [], restore: [current]))
     }
 
     // MARK: Editing
 
-    /// Adds completed contractions (quick log). Throws on the first invalid one.
+    /// Adds completed contractions (quick log). Throws on the first invalid
+    /// one, or if the save fails.
     func add(_ new: [ContractionRecord], now: Date = .now) throws {
         guard !new.isEmpty else { return }
         for record in new {
@@ -140,7 +163,7 @@ final class ContractionStore {
         let message = new.count == 1
             ? "Added \(Format.duration(new[0].duration ?? 0, approximate: new[0].isApproximate))"
             : "Added \(new.count) contractions"
-        commit(undo: UndoAction(message: message, remove: new.map(\.id), restore: []))
+        try commit(undo: UndoAction(message: message, remove: new.map(\.id), restore: []))
     }
 
     func update(_ record: ContractionRecord, now: Date = .now) throws {
@@ -151,26 +174,30 @@ final class ContractionStore {
         if record.isInProgress && !model.record.isInProgress { record.duration = model.duration }
         record.note = record.note.replacingOccurrences(of: "\n", with: " ")
         model.apply(record)
-        commit(undo: nil)
+        try commit(undo: nil)
     }
 
     func delete(_ ids: [UUID]) {
         let removed = ids.compactMap { models[$0] }
         guard !removed.isEmpty else { return }
         let snapshot = removed.map(\.record)
-        removed.forEach(context.delete)
-        commit(undo: UndoAction(message: removed.count == 1 ? "Deleted" : "Deleted \(removed.count)",
-                                remove: [], restore: snapshot))
+        removed.forEach { context?.delete($0) }
+        commitOrReport(undo: UndoAction(message: removed.count == 1 ? "Deleted" : "Deleted \(removed.count)",
+                                        remove: [], restore: snapshot))
     }
 
     /// Applies a reviewed import: inserts `additions`, overwrites the rows
-    /// in `replacements` (by id). Undo restores the pre-import state.
-    func applyImport(additions: [ContractionRecord], replacements: [ContractionRecord]) {
+    /// in `replacements` (by id). Undo restores the pre-import state. Throws
+    /// if the save fails.
+    func applyImport(additions: [ContractionRecord], replacements: [ContractionRecord]) throws {
         var originals: [ContractionRecord] = []
         for replacement in replacements {
             // Never overwrite a contraction that is being timed right now
             // (the plan may predate a Start from the Live Activity).
-            guard let model = models[replacement.id], !model.record.isInProgress else { continue }
+            // Skipping rows that already match keeps a repeat apply from
+            // recording overwritten rows as the originals.
+            guard let model = models[replacement.id], !model.record.isInProgress,
+                  model.record != replacement else { continue }
             originals.append(model.record)
             model.apply(replacement)
         }
@@ -180,13 +207,13 @@ final class ContractionStore {
         var parts: [String] = []
         if !newRows.isEmpty { parts.append("Imported \(newRows.count)") }
         if !originals.isEmpty { parts.append("updated \(originals.count)") }
-        commit(undo: UndoAction(message: parts.joined(separator: " · ").capitalizedFirst,
-                                remove: newRows.map(\.id), restore: originals))
+        try commit(undo: UndoAction(message: parts.joined(separator: " · ").capitalizedFirst,
+                                    remove: newRows.map(\.id), restore: originals))
     }
 
     func deleteAll() {
-        try? context.delete(model: Contraction.self)
-        commit(undo: nil)
+        try? context?.delete(model: Contraction.self)
+        commitOrReport(undo: nil)
     }
 
     // MARK: Undo
@@ -194,7 +221,7 @@ final class ContractionStore {
     func performUndo() {
         guard let action = undo else { return }
         for id in action.remove {
-            if let model = models[id] { context.delete(model) }
+            if let model = models[id] { context?.delete(model) }
         }
         for record in action.restore {
             // Never end up with two contractions in progress.
@@ -205,11 +232,15 @@ final class ContractionStore {
                 insert(record)
             }
         }
-        commit(undo: nil)
+        commitOrReport(undo: nil)
     }
 
     func clearUndo(_ id: UndoAction.ID? = nil) {
         if id == nil || undo?.id == id { undo = nil }
+    }
+
+    func clearError() {
+        lastError = nil
     }
 
     // MARK: Sync
@@ -217,8 +248,7 @@ final class ContractionStore {
     /// Re-reads the shared store (another process, e.g. the Live Activity
     /// intent, may have changed it).
     func refreshFromDisk() {
-        context = ModelContext(container)
-        context.autosaveEnabled = false
+        context = container.map(Self.makeContext)
         reload()
     }
 
@@ -249,24 +279,38 @@ final class ContractionStore {
 
     private func insert(_ record: ContractionRecord) {
         let model = Contraction(record)
-        context.insert(model)
+        context?.insert(model)
         models[record.id] = model
     }
 
-    private func commit(undo newUndo: UndoAction?, allowActivityStart: Bool = false) {
+    /// Saves, or rolls back and throws. Undo is only offered for a change
+    /// that was saved.
+    private func commit(undo newUndo: UndoAction?, allowActivityStart: Bool = false) throws {
+        defer { syncLiveActivity(allowStart: allowActivityStart) }
         do {
+            guard let context else { throw SaveError() }
             try context.save()
         } catch {
-            context.rollback()
+            context?.rollback()
+            reload()
+            throw SaveError()
         }
         reload()
         undo = newUndo
-        syncLiveActivity(allowStart: allowActivityStart)
+    }
+
+    /// For actions without a sheet to show the error in.
+    private func commitOrReport(undo newUndo: UndoAction?, allowActivityStart: Bool = false) {
+        do {
+            try commit(undo: newUndo, allowActivityStart: allowActivityStart)
+        } catch {
+            lastError = error.localizedDescription
+        }
     }
 
     private func reload() {
         let descriptor = FetchDescriptor<Contraction>(sortBy: [SortDescriptor(\.start, order: .reverse)])
-        let fetched = (try? context.fetch(descriptor)) ?? []
+        let fetched = (try? context?.fetch(descriptor)) ?? []
         models = Dictionary(fetched.map { ($0.id, $0) }, uniquingKeysWith: { first, _ in first })
         records = fetched.map(\.record)
         inProgress = records.first(where: \.isInProgress)
@@ -284,7 +328,7 @@ final class ContractionStore {
             let lastCompleted = records.first { !$0.isInProgress }
             return .init(state: .init(phase: .contracting, phaseStart: current.start,
                                       lastDuration: lastCompleted?.duration,
-                                      lastInterval: intervals[current.id],
+                                      lastInterval: displayInterval(for: current.id),
                                       lastHourCount: lastHourCount),
                          staleDate: nil)
         }
@@ -293,7 +337,7 @@ final class ContractionStore {
         guard now.timeIntervalSince(restingSince) < LiveActivityController.idleTimeout else { return nil }
         return .init(state: .init(phase: .resting, phaseStart: latest.start,
                                   lastDuration: latest.duration,
-                                  lastInterval: intervals[latest.id],
+                                  lastInterval: displayInterval(for: latest.id),
                                   lastHourCount: lastHourCount),
                      staleDate: restingSince.addingTimeInterval(LiveActivityController.idleTimeout))
     }
@@ -312,28 +356,28 @@ final class ContractionStore {
         return sections
     }
 
-    private static func makeContainer(inMemory: Bool) -> ModelContainer {
+    private static func makeContext(_ container: ModelContainer) -> ModelContext {
+        let context = ModelContext(container)
+        context.autosaveEnabled = false
+        return context
+    }
+
+    private static func makeContainer(inMemory: Bool) throws -> ModelContainer {
         let schema = Schema([Contraction.self])
-        var configurations: [ModelConfiguration] = []
-        if !inMemory {
-            if FileManager.default.containerURL(forSecurityApplicationGroupIdentifier: AppGroup.id) != nil {
-                configurations.append(ModelConfiguration("Contractions", schema: schema,
-                                                         groupContainer: .identifier(AppGroup.id),
-                                                         cloudKitDatabase: .none))
-            }
-            // Unsigned builds (no App Group entitlement) fall back to the
-            // app's own container rather than failing to launch.
-            configurations.append(ModelConfiguration("Contractions", schema: schema,
-                                                     groupContainer: .none, cloudKitDatabase: .none))
+        let memory = ModelConfiguration("Contractions", schema: schema,
+                                        isStoredInMemoryOnly: true, cloudKitDatabase: .none)
+        if inMemory { return try ModelContainer(for: schema, configurations: memory) }
+        if FileManager.default.containerURL(forSecurityApplicationGroupIdentifier: AppGroup.id) != nil {
+            // The real store. If it won't open, say so rather than silently
+            // starting over with an empty one.
+            return try ModelContainer(for: schema, configurations: ModelConfiguration(
+                "Contractions", schema: schema, groupContainer: .identifier(AppGroup.id), cloudKitDatabase: .none))
         }
-        configurations.append(ModelConfiguration("Contractions", schema: schema,
-                                                 isStoredInMemoryOnly: true, cloudKitDatabase: .none))
-        for configuration in configurations {
-            if let container = try? ModelContainer(for: schema, configurations: configuration) {
-                return container
-            }
-        }
-        fatalError("Could not create a model container")
+        // Unsigned builds (no App Group entitlement) fall back to the app's
+        // own container, then memory, rather than failing to launch.
+        let local = ModelConfiguration("Contractions", schema: schema, groupContainer: .none, cloudKitDatabase: .none)
+        if let container = try? ModelContainer(for: schema, configurations: local) { return container }
+        return try ModelContainer(for: schema, configurations: memory)
     }
 }
 

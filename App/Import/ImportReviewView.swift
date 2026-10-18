@@ -12,6 +12,9 @@ struct ImportReviewView: View {
     @State private var selectedAdditions: Set<UUID>
     @State private var choice: GlobalChoice = .suggested
     @State private var overrides: [UUID: MatchResolution] = [:]
+    /// Set on the first tap so a double tap can't apply the import twice.
+    @State private var isImporting = false
+    @State private var errorMessage: String?
     private let additions: [ContractionRecord]
 
     enum GlobalChoice: String, CaseIterable, Identifiable {
@@ -100,13 +103,22 @@ struct ImportReviewView: View {
         .scrollContentBackground(.hidden)
         .background(Theme.background.ignoresSafeArea())
         .safeAreaInset(edge: .bottom) {
-            Button(action: importNow) {
-                Text(buttonTitle)
-                    .font(.body.weight(.bold))
-                    .frame(maxWidth: .infinity, minHeight: 52)
+            VStack(spacing: 10) {
+                if let errorMessage {
+                    Text(errorMessage)
+                        .font(.footnote.weight(.medium))
+                        .foregroundStyle(Theme.contracting)
+                        .multilineTextAlignment(.center)
+                }
+                Button(action: importNow) {
+                    Text(buttonTitle)
+                        .font(.body.weight(.bold))
+                        .frame(maxWidth: .infinity, minHeight: 52)
+                }
+                .buttonStyle(.borderedProminent)
+                .buttonBorderShape(.capsule)
+                .disabled(isImporting)
             }
-            .buttonStyle(.borderedProminent)
-            .buttonBorderShape(.capsule)
             .padding(.horizontal, 20)
             .padding(.vertical, 10)
             .background(.bar)
@@ -152,11 +164,19 @@ struct ImportReviewView: View {
     }
 
     private func importNow() {
+        guard !isImporting else { return }
+        isImporting = true
         let chosen = plan.additions.filter { selectedAdditions.contains($0.id) }
         let replacements = plan.matches
             .filter { resolution(for: $0) == .useTheirs }
             .map { Merge.apply(.useTheirs, to: $0) }
-        store.applyImport(additions: chosen, replacements: replacements)
+        do {
+            try store.applyImport(additions: chosen, replacements: replacements)
+        } catch {
+            errorMessage = error.localizedDescription
+            isImporting = false
+            return
+        }
         onDone()
     }
 

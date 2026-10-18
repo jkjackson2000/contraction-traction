@@ -52,26 +52,40 @@ private struct PatternBanner: View {
 
 private struct StatsRow: View {
     let stats: WindowStats
+    @Environment(\.dynamicTypeSize) private var dynamicTypeSize
 
     var body: some View {
         VStack(alignment: .leading, spacing: 8) {
             Text("Last hour")
                 .font(.footnote.weight(.semibold))
                 .foregroundStyle(.secondary)
-            HStack(alignment: .top, spacing: 0) {
-                stat("Count", "\(stats.count)")
-                Divider().frame(height: 36)
-                stat("Avg length", stats.averageDuration.map { Format.duration($0.rounded()) } ?? "–")
-                Divider().frame(height: 36)
-                stat("Avg apart", stats.averageInterval.map { Format.interval($0.rounded()) } ?? "–")
+            // Side by side truncates at accessibility sizes, so stack them.
+            if dynamicTypeSize.isAccessibilitySize {
+                VStack(alignment: .leading, spacing: 12) {
+                    stat("Count", count, alignment: .leading)
+                    stat("Avg length", averageDuration, alignment: .leading)
+                    stat("Avg apart", averageInterval, alignment: .leading)
+                }
+            } else {
+                HStack(alignment: .top, spacing: 0) {
+                    stat("Count", count)
+                    Divider().frame(height: 36)
+                    stat("Avg length", averageDuration)
+                    Divider().frame(height: 36)
+                    stat("Avg apart", averageInterval)
+                }
             }
         }
         .padding(16)
         .background(Theme.card, in: RoundedRectangle(cornerRadius: 18, style: .continuous))
     }
 
-    private func stat(_ title: String, _ value: String) -> some View {
-        VStack(spacing: 2) {
+    private var count: String { "\(stats.count)" }
+    private var averageDuration: String { stats.averageDuration.map { Format.duration($0.rounded()) } ?? "–" }
+    private var averageInterval: String { stats.averageInterval.map { Format.interval($0.rounded()) } ?? "–" }
+
+    private func stat(_ title: String, _ value: String, alignment: HorizontalAlignment = .center) -> some View {
+        VStack(alignment: alignment, spacing: 2) {
             Text(value)
                 .font(.system(.title2, design: .rounded).weight(.semibold))
                 .monospacedDigit()
@@ -83,7 +97,7 @@ private struct StatsRow: View {
                 .lineLimit(1)
                 .minimumScaleFactor(0.8)
         }
-        .frame(maxWidth: .infinity)
+        .frame(maxWidth: .infinity, alignment: Alignment(horizontal: alignment, vertical: .center))
         .accessibilityElement(children: .combine)
     }
 }

@@ -11,6 +11,8 @@ struct ImportSheet: View {
     @Environment(\.dismiss) private var dismiss
     @State private var text = ""
     @State private var parsed = ParseResult(records: [], rejectedLines: [])
+    /// The text `parsed` came from, so each change is parsed only once.
+    @State private var parsedText = ""
     @State private var plan: ImportPlan?
     @State private var showReview = false
     @State private var didLoadInitial = false
@@ -110,10 +112,10 @@ struct ImportSheet: View {
                 }
             }
             .task(id: text) {
-                // Debounce typing. Continue re-parses, so this is display only.
+                // Debounce typing. Continue parses right away if this hasn't yet.
                 try? await Task.sleep(for: .milliseconds(250))
                 guard !Task.isCancelled else { return }
-                parsed = LogText.parse(text)
+                parseIfNeeded()
             }
             .onAppear(perform: loadInitial)
         }
@@ -148,13 +150,19 @@ struct ImportSheet: View {
         didLoadInitial = true
         guard let initialText else { return }
         text = initialText
-        parsed = LogText.parse(initialText)
+        parseIfNeeded()
         if !parsed.records.isEmpty { review() }
     }
 
-    private func review() {
-        // Parse once more in case the debounce hasn't caught up yet.
+    private func parseIfNeeded() {
+        guard parsedText != text else { return }
         parsed = LogText.parse(text)
+        parsedText = text
+    }
+
+    private func review() {
+        // In case the debounce hasn't caught up yet.
+        parseIfNeeded()
         guard !parsed.records.isEmpty else { return }
         plan = Merge.plan(existing: store.records, incoming: parsed.records)
         showReview = true

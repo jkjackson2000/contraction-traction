@@ -21,10 +21,7 @@ struct ContractionList: View {
                 Section {
                     ForEach(section.records) { record in
                         Button { onEdit(record) } label: {
-                            ContractionRow(record: record, interval: store.intervals[record.id].flatMap {
-                                // A gap across sessions isn't a useful interval.
-                                $0 < LiveActivityController.idleTimeout ? $0 : nil
-                            })
+                            ContractionRow(record: record, interval: store.displayInterval(for: record.id))
                         }
                         .foregroundStyle(.primary)
                         .listRowBackground(Theme.card)

@@ -11,14 +11,32 @@ struct ToggleContractionIntent: LiveActivityIntent {
     static let openAppWhenRun = false
     static let authenticationPolicy: IntentAuthenticationPolicy = .alwaysAllowed
 
+    /// What the button showed when tapped. Acting on that, rather than
+    /// toggling, keeps a double tap or a stale Lock Screen from starting a
+    /// phantom contraction.
+    @Parameter(title: "Start")
+    var shouldStart: Bool
+
+    init(shouldStart: Bool) {
+        self.shouldStart = shouldStart
+    }
+
     init() {}
 
     @MainActor
     func perform() async throws -> some IntentResult {
         let store = ContractionStore.shared
+        guard store.loadError == nil else { throw ValidationError(message: "Couldn't open your saved contractions.") }
         // Another process may have written since this one last looked.
         store.refreshFromDisk()
-        store.toggle()
+        if shouldStart && store.inProgress == nil {
+            store.startContraction()
+        } else if !shouldStart && store.inProgress != nil {
+            store.stopContraction()
+        } else {
+            // Already in the requested state: just bring the activity up to date.
+            store.syncLiveActivity()
+        }
         store.clearUndo()
         await store.waitForLiveActivity()
         return .result()

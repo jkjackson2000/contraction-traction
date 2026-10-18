@@ -55,7 +55,8 @@ struct ContractionLiveActivity: Widget {
                     .monospacedDigit()
                     .foregroundStyle(tint)
                     .multilineTextAlignment(.trailing)
-                    .frame(width: 50, alignment: .trailing)
+                    // Room for h:mm:ss after an hour of rest.
+                    .frame(width: 64, alignment: .trailing)
             } minimal: {
                 ZStack {
                     Circle().strokeBorder(tint, lineWidth: 2.5)
@@ -129,7 +130,7 @@ private struct ToggleButton: View {
     let state: ContractionActivityAttributes.ContentState
 
     var body: some View {
-        Button(intent: ToggleContractionIntent()) {
+        Button(intent: ToggleContractionIntent(shouldStart: !state.isContracting)) {
             Label(state.isContracting ? "Stop" : "Start",
                   systemImage: state.isContracting ? "stop.fill" : "play.fill")
                 .font(.system(.title3, design: .rounded).weight(.bold))
@@ -145,26 +146,44 @@ private struct ToggleButton: View {
 
 // MARK: - Lock Screen
 
+/// Kept compact: the system caps the Lock Screen activity at 160pt tall.
 private struct LockScreenView: View {
     let state: ContractionActivityAttributes.ContentState
     let isStale: Bool
 
     var body: some View {
-        HStack(alignment: .center, spacing: 16) {
-            VStack(alignment: .leading, spacing: 6) {
-                PhaseLabel(state: state, isStale: isStale)
-                Text(timerInterval: state.timerRange, countsDown: false)
-                    .font(.system(size: 46, weight: .semibold, design: .rounded))
-                    .monospacedDigit()
-                    .foregroundStyle(.primary)
-                    .lineLimit(1)
-                    .minimumScaleFactor(0.7)
-                LastStats(state: state)
+        VStack(alignment: .leading, spacing: 8) {
+            HStack(alignment: .center, spacing: 12) {
+                VStack(alignment: .leading, spacing: 2) {
+                    PhaseLabel(state: state, isStale: isStale)
+                    Text(timerInterval: state.timerRange, countsDown: false)
+                        .font(.system(size: 36, weight: .semibold, design: .rounded))
+                        .monospacedDigit()
+                        .foregroundStyle(.primary)
+                        .lineLimit(1)
+                        .minimumScaleFactor(0.7)
+                }
+                Spacer(minLength: 0)
+                ToggleButton(state: state)
             }
-            Spacer(minLength: 0)
-            ToggleButton(state: state)
+            StatsLine(state: state)
         }
-        .padding(18)
+        .padding(14)
+    }
+}
+
+/// "Last 58s · Every 5m 12s · 7 in last hour" on one line.
+private struct StatsLine: View {
+    let state: ContractionActivityAttributes.ContentState
+
+    var body: some View {
+        // One Text, so it shrinks evenly instead of truncating a piece.
+        Text("Last \(state.lastDuration.map { Format.duration($0) } ?? "–") · Every \(state.lastInterval.map(Format.interval) ?? "–") · \(state.lastHourCount) in last hour")
+            .font(.footnote)
+            .monospacedDigit()
+            .foregroundStyle(.secondary)
+            .lineLimit(1)
+            .minimumScaleFactor(0.8)
     }
 }
 

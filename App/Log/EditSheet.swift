@@ -81,7 +81,7 @@ struct EditSheet: View {
                 Section {
                     Button("Delete Contraction", role: .destructive) {
                         store.delete([original.id])
-                        dismiss()
+                        if store.lastError == nil { dismiss() }
                     }
                 }
             }

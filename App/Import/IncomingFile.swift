@@ -4,7 +4,8 @@ import Foundation
 /// Never throws: unreadable input becomes "" and the Import sheet shows its
 /// normal empty state.
 enum IncomingFile {
-    static let maxBytes = 2 * 1024 * 1024
+    /// Far above any real log; keeps parsing and the text editor responsive.
+    static let maxBytes = 512 * 1024
 
     static func read(_ url: URL) -> String {
         guard url.isFileURL else { return "" }
