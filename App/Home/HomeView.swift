@@ -193,7 +193,7 @@ struct LogFile: Transferable {
 // MARK: - Screenshot scenarios (Debug builds only)
 
 #if DEBUG
-/// `-demo empty|resting|list|bulk|timing|quicklog|import` seeds sample data through
+/// `-demo empty|resting|list|bulk|timing|quicklog|import|partner` seeds sample data through
 /// the store and opens a screen, for simulator screenshots.
 private extension HomeView {
     func runDemoScenario() {
@@ -244,6 +244,23 @@ private extension HomeView {
             incoming += QuickLog.series(mostRecentStart: now.addingTimeInterval(-80 * 60), count: 4,
                                         every: 300, duration: 45)
             sheet = .importLog(ImportRequest(text: LogText.export(incoming)))
+        case "partner":
+            // A partner's log of the same session: four earlier ones she
+            // timed before I started, four identical, three timed a little
+            // differently (one replaces my approximate entry).
+            let today = Array(seed.prefix(offsets.count))
+            func copy(_ index: Int, shift: Double = 0, length: Double? = nil, approx: Bool? = nil) -> ContractionRecord {
+                let mine = today[index]
+                return ContractionRecord(start: mine.start.addingTimeInterval(shift), duration: length ?? mine.duration,
+                                         isApproximate: approx ?? mine.isApproximate, note: mine.note)
+            }
+            var incoming = [(92.8, 46.0), (88.1, 51.0), (83.4, 49.0), (78.2, 55.0)].map { ago, length in
+                ContractionRecord(start: now.addingTimeInterval(-ago * 60), duration: length)
+            }
+            incoming += [copy(2, shift: -6, length: 57, approx: false), copy(5, shift: 7, length: 59),
+                         copy(9, shift: 4, length: 68)]
+            incoming += [10, 12, 13, 14].map { copy($0) }
+            sheet = .importLog(ImportRequest(text: LogText.export(incoming.sorted { $0.start < $1.start })))
         default:
             break
         }
