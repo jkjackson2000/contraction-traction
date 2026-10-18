@@ -79,8 +79,8 @@ is repeated, and there are no spaces after the commas.
 
 | Field | Value |
 |---|---|
-| Support URL | `TBD: GitHub Pages support page` (likely `https://jkjackson2000.github.io/contraction-traction/`, served from `docs/index.html`) |
-| Privacy Policy URL | `TBD: GitHub Pages privacy page` (likely `https://jkjackson2000.github.io/contraction-traction/privacy.html`, served from `docs/privacy.html`) |
+| Support URL | `https://jkjackson2000.github.io/contraction-traction/` |
+| Privacy Policy URL | `https://jkjackson2000.github.io/contraction-traction/privacy.html` |
 | Marketing URL | Optional. Leave blank. |
 
 Turn on GitHub Pages and confirm both pages load before you submit. App
