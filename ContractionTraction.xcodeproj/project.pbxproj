@@ -1,0 +1,680 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 77;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		0357EF99977E81A37B50B0E9 /* SettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8ED077068EF49E8CC2015225 /* SettingsView.swift */; };
+		066C1DF178814690526A9AC3 /* Chips.swift in Sources */ = {isa = PBXBuildFile; fileRef = EE3520E4AE3D970B7FCA3FC2 /* Chips.swift */; };
+		10A21173844D4CA9F31DD241 /* ContractionStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = EEAB0F2180D824232AD6F940 /* ContractionStore.swift */; };
+		1DFFB0B31458A2A02F80874D /* IncomingFile.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0FBE3F588D9EB074E04C0DB0 /* IncomingFile.swift */; };
+		1ECC2E2E6A4453ABFE22F97F /* QuickLogSheet.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7F05168B954B5D5C802A20D5 /* QuickLogSheet.swift */; };
+		20FA5911292AE473C840FFB9 /* ToggleContractionIntent.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A9D19CB7EAABE90DB00FD7C /* ToggleContractionIntent.swift */; };
+		24227626137397801E50199F /* HomeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6F69E35721C19DB9CF1A61F7 /* HomeView.swift */; };
+		247A68603AB657942CEF042D /* PrivacyInfo.xcprivacy in Resources */ = {isa = PBXBuildFile; fileRef = FB67F9D692C9A70DC04CBB84 /* PrivacyInfo.xcprivacy */; };
+		25773A15564FA55A45F70A76 /* SummaryView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A3242091E9C92103FF7EFF4D /* SummaryView.swift */; };
+		2979B2DF580E4E7E9DCD2E6A /* ContractionStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = EEAB0F2180D824232AD6F940 /* ContractionStore.swift */; };
+		298E21CECA116D36AD7E9EFC /* ContractionTractionLiveActivity.appex in Embed Foundation Extensions */ = {isa = PBXBuildFile; fileRef = 20514E8718E1086688EACBD6 /* ContractionTractionLiveActivity.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
+		2B06135420028884F1795394 /* Contraction.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A1F478767A67002150A886D /* Contraction.swift */; };
+		2B71D97655BABFE6035EC84C /* ContractionCore in Frameworks */ = {isa = PBXBuildFile; productRef = D9EEAE73307ACFDFB9127031 /* ContractionCore */; };
+		37DD38583AA3BB4EF66E4DAE /* Theme.swift in Sources */ = {isa = PBXBuildFile; fileRef = DC4F0B2B8F44B21768A9C5E1 /* Theme.swift */; };
+		3A4ED476DEE6A4D3F80707F8 /* Theme.swift in Sources */ = {isa = PBXBuildFile; fileRef = DC4F0B2B8F44B21768A9C5E1 /* Theme.swift */; };
+		4BE6D72AA2E054E0EC14189F /* ImportReviewView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 64378574D57EF781DE9B3445 /* ImportReviewView.swift */; };
+		6E4483E860A99CCC2196FAEC /* Format.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B9B90D4916FFEE6B65325CC /* Format.swift */; };
+		72255BFB210374D5EC240A51 /* DisclaimerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FF3BFD7EE68CE3C98D27C020 /* DisclaimerView.swift */; };
+		7E7C925080324D11DF830717 /* EditSheet.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0E9B51E55E9607D36FEEB9A9 /* EditSheet.swift */; };
+		842E15A1F315EE5DE61B6A17 /* ContractionActivityAttributes.swift in Sources */ = {isa = PBXBuildFile; fileRef = 42779D11291D76C87B9496E3 /* ContractionActivityAttributes.swift */; };
+		8CA4945F6338318079B08850 /* PrivacyInfo.xcprivacy in Resources */ = {isa = PBXBuildFile; fileRef = 7138EEF8D01D39B8412EB6C0 /* PrivacyInfo.xcprivacy */; };
+		8E035054749C34B5AE5F32BC /* TimerButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2682EF092552F27A8F20EFCA /* TimerButton.swift */; };
+		9D0E7EADCB8F21C3EB79FA6E /* ContractionList.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA884B33D2B0D821F943C43F /* ContractionList.swift */; };
+		A7C4C3BD98FB0E1F1D30C023 /* ContractionTractionApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = E50C89A3C909E42C8B29FBF7 /* ContractionTractionApp.swift */; };
+		A9B1D2CD84AAECF978BEAF71 /* ContractionActivityAttributes.swift in Sources */ = {isa = PBXBuildFile; fileRef = 42779D11291D76C87B9496E3 /* ContractionActivityAttributes.swift */; };
+		AA613A8041A36F8EF9464ACC /* ImportSheet.swift in Sources */ = {isa = PBXBuildFile; fileRef = 311330D7A0F5A86FE06A82FD /* ImportSheet.swift */; };
+		AD7D3266AF44E047EB09F6F5 /* Contraction.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A1F478767A67002150A886D /* Contraction.swift */; };
+		BA02D43A1A4765133BA50E9D /* ToggleContractionIntent.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A9D19CB7EAABE90DB00FD7C /* ToggleContractionIntent.swift */; };
+		BCA4D81E5BDB61A848E83F24 /* ContractionLiveActivity.swift in Sources */ = {isa = PBXBuildFile; fileRef = E946256F7848E258019F2862 /* ContractionLiveActivity.swift */; };
+		C55315F8AF1313E7682F9503 /* Format.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B9B90D4916FFEE6B65325CC /* Format.swift */; };
+		DD6D4092CC6D0ED0B3C29518 /* WidgetKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = AE2532A429C9997C8353BADB /* WidgetKit.framework */; };
+		E7AAC27E5AA48480EA1CA903 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 2D04B4679172E08A8D13A67E /* Assets.xcassets */; };
+		EAB12B0E53C8027D5838A0CD /* ContractionCore in Frameworks */ = {isa = PBXBuildFile; productRef = 1D1B3869C4189FC58300B362 /* ContractionCore */; };
+		EB5AE69F550B87629A4B5386 /* LiveActivityController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5212974A05946E56949037DF /* LiveActivityController.swift */; };
+		F76B44699D7D40203246B583 /* LiveActivityController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5212974A05946E56949037DF /* LiveActivityController.swift */; };
+		FA648E4DF2657F0613168BFC /* SwiftUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2E7F4616421186102198A16C /* SwiftUI.framework */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXContainerItemProxy section */
+		8BA270F83B318A28E2B060E5 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = F93C0422B45110136861397D /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 22062693EF9390EC673A70E8;
+			remoteInfo = ContractionTractionLiveActivity;
+		};
+/* End PBXContainerItemProxy section */
+
+/* Begin PBXCopyFilesBuildPhase section */
+		C67FD33C999D3382F34A7BB4 /* Embed Foundation Extensions */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 13;
+			files = (
+				298E21CECA116D36AD7E9EFC /* ContractionTractionLiveActivity.appex in Embed Foundation Extensions */,
+			);
+			name = "Embed Foundation Extensions";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXCopyFilesBuildPhase section */
+
+/* Begin PBXFileReference section */
+		0A9D19CB7EAABE90DB00FD7C /* ToggleContractionIntent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ToggleContractionIntent.swift; sourceTree = "<group>"; };
+		0E9B51E55E9607D36FEEB9A9 /* EditSheet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditSheet.swift; sourceTree = "<group>"; };
+		0FBE3F588D9EB074E04C0DB0 /* IncomingFile.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IncomingFile.swift; sourceTree = "<group>"; };
+		20514E8718E1086688EACBD6 /* ContractionTractionLiveActivity.appex */ = {isa = PBXFileReference; includeInIndex = 0; lastKnownFileType = "wrapper.app-extension"; path = ContractionTractionLiveActivity.appex; sourceTree = BUILT_PRODUCTS_DIR; };
+		2682EF092552F27A8F20EFCA /* TimerButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimerButton.swift; sourceTree = "<group>"; };
+		2B9B90D4916FFEE6B65325CC /* Format.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Format.swift; sourceTree = "<group>"; };
+		2D04B4679172E08A8D13A67E /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		2E7F4616421186102198A16C /* SwiftUI.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SwiftUI.framework; path = System/Library/Frameworks/SwiftUI.framework; sourceTree = SDKROOT; };
+		311330D7A0F5A86FE06A82FD /* ImportSheet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImportSheet.swift; sourceTree = "<group>"; };
+		42779D11291D76C87B9496E3 /* ContractionActivityAttributes.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContractionActivityAttributes.swift; sourceTree = "<group>"; };
+		5212974A05946E56949037DF /* LiveActivityController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LiveActivityController.swift; sourceTree = "<group>"; };
+		627868FA8FE3D192B98E661C /* ContractionTraction.app */ = {isa = PBXFileReference; includeInIndex = 0; lastKnownFileType = wrapper.application; path = ContractionTraction.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		64378574D57EF781DE9B3445 /* ImportReviewView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImportReviewView.swift; sourceTree = "<group>"; };
+		6F69E35721C19DB9CF1A61F7 /* HomeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeView.swift; sourceTree = "<group>"; };
+		705146FB1049E0AD44E73739 /* ContractionCore */ = {isa = PBXFileReference; lastKnownFileType = folder; name = ContractionCore; path = Packages/ContractionCore; sourceTree = SOURCE_ROOT; };
+		7138EEF8D01D39B8412EB6C0 /* PrivacyInfo.xcprivacy */ = {isa = PBXFileReference; path = PrivacyInfo.xcprivacy; sourceTree = "<group>"; };
+		76D9F29E87E2D1C580BB3C7F /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
+		7F05168B954B5D5C802A20D5 /* QuickLogSheet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QuickLogSheet.swift; sourceTree = "<group>"; };
+		85C87678F32E809CDED7223E /* ContractionTraction.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = ContractionTraction.entitlements; sourceTree = "<group>"; };
+		8ED077068EF49E8CC2015225 /* SettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsView.swift; sourceTree = "<group>"; };
+		9A1F478767A67002150A886D /* Contraction.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Contraction.swift; sourceTree = "<group>"; };
+		A3242091E9C92103FF7EFF4D /* SummaryView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SummaryView.swift; sourceTree = "<group>"; };
+		AE2532A429C9997C8353BADB /* WidgetKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = WidgetKit.framework; path = System/Library/Frameworks/WidgetKit.framework; sourceTree = SDKROOT; };
+		B53E93DBA4D79C7315515838 /* LiveActivity.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = LiveActivity.entitlements; sourceTree = "<group>"; };
+		D4C898AEFB5E28C8FFCD8677 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
+		DC4F0B2B8F44B21768A9C5E1 /* Theme.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Theme.swift; sourceTree = "<group>"; };
+		E50C89A3C909E42C8B29FBF7 /* ContractionTractionApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContractionTractionApp.swift; sourceTree = "<group>"; };
+		E946256F7848E258019F2862 /* ContractionLiveActivity.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContractionLiveActivity.swift; sourceTree = "<group>"; };
+		EA884B33D2B0D821F943C43F /* ContractionList.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContractionList.swift; sourceTree = "<group>"; };
+		EE3520E4AE3D970B7FCA3FC2 /* Chips.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Chips.swift; sourceTree = "<group>"; };
+		EEAB0F2180D824232AD6F940 /* ContractionStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContractionStore.swift; sourceTree = "<group>"; };
+		FB67F9D692C9A70DC04CBB84 /* PrivacyInfo.xcprivacy */ = {isa = PBXFileReference; path = PrivacyInfo.xcprivacy; sourceTree = "<group>"; };
+		FF3BFD7EE68CE3C98D27C020 /* DisclaimerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DisclaimerView.swift; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		13D69463F1449BED871F0170 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				2B71D97655BABFE6035EC84C /* ContractionCore in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		CAD535C1649F16DEF247186A /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				EAB12B0E53C8027D5838A0CD /* ContractionCore in Frameworks */,
+				FA648E4DF2657F0613168BFC /* SwiftUI.framework in Frameworks */,
+				DD6D4092CC6D0ED0B3C29518 /* WidgetKit.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		11A019BBA776A3743525ABE8 /* Resources */ = {
+			isa = PBXGroup;
+			children = (
+				2D04B4679172E08A8D13A67E /* Assets.xcassets */,
+				7138EEF8D01D39B8412EB6C0 /* PrivacyInfo.xcprivacy */,
+			);
+			path = Resources;
+			sourceTree = "<group>";
+		};
+		1CCAD718693FD1988A46A034 /* Packages */ = {
+			isa = PBXGroup;
+			children = (
+				705146FB1049E0AD44E73739 /* ContractionCore */,
+			);
+			path = Packages;
+			sourceTree = "<group>";
+		};
+		1FFD98DE501FBF548D47E4C3 /* Import */ = {
+			isa = PBXGroup;
+			children = (
+				64378574D57EF781DE9B3445 /* ImportReviewView.swift */,
+				311330D7A0F5A86FE06A82FD /* ImportSheet.swift */,
+				0FBE3F588D9EB074E04C0DB0 /* IncomingFile.swift */,
+			);
+			path = Import;
+			sourceTree = "<group>";
+		};
+		2382DCADD7512FF232D310A6 /* App */ = {
+			isa = PBXGroup;
+			children = (
+				85C87678F32E809CDED7223E /* ContractionTraction.entitlements */,
+				E50C89A3C909E42C8B29FBF7 /* ContractionTractionApp.swift */,
+				D4C898AEFB5E28C8FFCD8677 /* Info.plist */,
+				DE00F6BD650423D19A3D6AA1 /* Home */,
+				1FFD98DE501FBF548D47E4C3 /* Import */,
+				446A9F253135819C9899EF09 /* Log */,
+				11A019BBA776A3743525ABE8 /* Resources */,
+				26A7EAAAD2CF7866E1A2A4C3 /* Settings */,
+			);
+			path = App;
+			sourceTree = "<group>";
+		};
+		26A7EAAAD2CF7866E1A2A4C3 /* Settings */ = {
+			isa = PBXGroup;
+			children = (
+				FF3BFD7EE68CE3C98D27C020 /* DisclaimerView.swift */,
+				8ED077068EF49E8CC2015225 /* SettingsView.swift */,
+			);
+			path = Settings;
+			sourceTree = "<group>";
+		};
+		446A9F253135819C9899EF09 /* Log */ = {
+			isa = PBXGroup;
+			children = (
+				EE3520E4AE3D970B7FCA3FC2 /* Chips.swift */,
+				0E9B51E55E9607D36FEEB9A9 /* EditSheet.swift */,
+				7F05168B954B5D5C802A20D5 /* QuickLogSheet.swift */,
+			);
+			path = Log;
+			sourceTree = "<group>";
+		};
+		4D55E493491C895E0ED8CCAF = {
+			isa = PBXGroup;
+			children = (
+				2382DCADD7512FF232D310A6 /* App */,
+				B47D0265787E1E3674A18AC4 /* LiveActivity */,
+				1CCAD718693FD1988A46A034 /* Packages */,
+				7CA38903B107AE869C80E3F5 /* Shared */,
+				AA9C2096CB0CC371BA67A630 /* Frameworks */,
+				8BA14F19CA0552EA66072266 /* Products */,
+			);
+			sourceTree = "<group>";
+		};
+		7CA38903B107AE869C80E3F5 /* Shared */ = {
+			isa = PBXGroup;
+			children = (
+				9A1F478767A67002150A886D /* Contraction.swift */,
+				42779D11291D76C87B9496E3 /* ContractionActivityAttributes.swift */,
+				EEAB0F2180D824232AD6F940 /* ContractionStore.swift */,
+				2B9B90D4916FFEE6B65325CC /* Format.swift */,
+				5212974A05946E56949037DF /* LiveActivityController.swift */,
+				DC4F0B2B8F44B21768A9C5E1 /* Theme.swift */,
+				0A9D19CB7EAABE90DB00FD7C /* ToggleContractionIntent.swift */,
+			);
+			path = Shared;
+			sourceTree = "<group>";
+		};
+		8BA14F19CA0552EA66072266 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				627868FA8FE3D192B98E661C /* ContractionTraction.app */,
+				20514E8718E1086688EACBD6 /* ContractionTractionLiveActivity.appex */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		AA9C2096CB0CC371BA67A630 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				2E7F4616421186102198A16C /* SwiftUI.framework */,
+				AE2532A429C9997C8353BADB /* WidgetKit.framework */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		B47D0265787E1E3674A18AC4 /* LiveActivity */ = {
+			isa = PBXGroup;
+			children = (
+				E946256F7848E258019F2862 /* ContractionLiveActivity.swift */,
+				76D9F29E87E2D1C580BB3C7F /* Info.plist */,
+				B53E93DBA4D79C7315515838 /* LiveActivity.entitlements */,
+				FB67F9D692C9A70DC04CBB84 /* PrivacyInfo.xcprivacy */,
+			);
+			path = LiveActivity;
+			sourceTree = "<group>";
+		};
+		DE00F6BD650423D19A3D6AA1 /* Home */ = {
+			isa = PBXGroup;
+			children = (
+				EA884B33D2B0D821F943C43F /* ContractionList.swift */,
+				6F69E35721C19DB9CF1A61F7 /* HomeView.swift */,
+				A3242091E9C92103FF7EFF4D /* SummaryView.swift */,
+				2682EF092552F27A8F20EFCA /* TimerButton.swift */,
+			);
+			path = Home;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		22062693EF9390EC673A70E8 /* ContractionTractionLiveActivity */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = A9A05215D3BE78E12C49184D /* Build configuration list for PBXNativeTarget "ContractionTractionLiveActivity" */;
+			buildPhases = (
+				D3F54FF1574D754751A9E9DF /* Sources */,
+				E7ADF88FE252F52C90C5F6F1 /* Resources */,
+				CAD535C1649F16DEF247186A /* Frameworks */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = ContractionTractionLiveActivity;
+			packageProductDependencies = (
+				1D1B3869C4189FC58300B362 /* ContractionCore */,
+			);
+			productName = ContractionTractionLiveActivity;
+			productReference = 20514E8718E1086688EACBD6 /* ContractionTractionLiveActivity.appex */;
+			productType = "com.apple.product-type.app-extension";
+		};
+		D7C73C3203094B003DE689BD /* ContractionTraction */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = DB3602A09EBD99A6564C4FAE /* Build configuration list for PBXNativeTarget "ContractionTraction" */;
+			buildPhases = (
+				2251E791D8F904D32DCD001C /* Sources */,
+				9389ABC07470909D573B10A1 /* Resources */,
+				13D69463F1449BED871F0170 /* Frameworks */,
+				C67FD33C999D3382F34A7BB4 /* Embed Foundation Extensions */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				DFF974F1A2A4AD41C92CB68A /* PBXTargetDependency */,
+			);
+			name = ContractionTraction;
+			packageProductDependencies = (
+				D9EEAE73307ACFDFB9127031 /* ContractionCore */,
+			);
+			productName = ContractionTraction;
+			productReference = 627868FA8FE3D192B98E661C /* ContractionTraction.app */;
+			productType = "com.apple.product-type.application";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		F93C0422B45110136861397D /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				BuildIndependentTargetsInParallel = YES;
+				LastUpgradeCheck = 1430;
+				TargetAttributes = {
+					22062693EF9390EC673A70E8 = {
+						DevelopmentTeam = MSXGHATPMF;
+						ProvisioningStyle = Automatic;
+					};
+					D7C73C3203094B003DE689BD = {
+						DevelopmentTeam = MSXGHATPMF;
+						ProvisioningStyle = Automatic;
+					};
+				};
+			};
+			buildConfigurationList = EADDEDABF62C48B9A2C8389A /* Build configuration list for PBXProject "ContractionTraction" */;
+			developmentRegion = en;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				Base,
+				en,
+			);
+			mainGroup = 4D55E493491C895E0ED8CCAF;
+			minimizedProjectReferenceProxies = 1;
+			packageReferences = (
+				9153F0D0F3BCBF6F8DF259A1 /* XCLocalSwiftPackageReference "Packages/ContractionCore" */,
+			);
+			preferredProjectObjectVersion = 77;
+			productRefGroup = 8BA14F19CA0552EA66072266 /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				D7C73C3203094B003DE689BD /* ContractionTraction */,
+				22062693EF9390EC673A70E8 /* ContractionTractionLiveActivity */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		9389ABC07470909D573B10A1 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				E7AAC27E5AA48480EA1CA903 /* Assets.xcassets in Resources */,
+				8CA4945F6338318079B08850 /* PrivacyInfo.xcprivacy in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		E7ADF88FE252F52C90C5F6F1 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				247A68603AB657942CEF042D /* PrivacyInfo.xcprivacy in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		2251E791D8F904D32DCD001C /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				066C1DF178814690526A9AC3 /* Chips.swift in Sources */,
+				2B06135420028884F1795394 /* Contraction.swift in Sources */,
+				A9B1D2CD84AAECF978BEAF71 /* ContractionActivityAttributes.swift in Sources */,
+				9D0E7EADCB8F21C3EB79FA6E /* ContractionList.swift in Sources */,
+				10A21173844D4CA9F31DD241 /* ContractionStore.swift in Sources */,
+				A7C4C3BD98FB0E1F1D30C023 /* ContractionTractionApp.swift in Sources */,
+				72255BFB210374D5EC240A51 /* DisclaimerView.swift in Sources */,
+				7E7C925080324D11DF830717 /* EditSheet.swift in Sources */,
+				C55315F8AF1313E7682F9503 /* Format.swift in Sources */,
+				24227626137397801E50199F /* HomeView.swift in Sources */,
+				4BE6D72AA2E054E0EC14189F /* ImportReviewView.swift in Sources */,
+				AA613A8041A36F8EF9464ACC /* ImportSheet.swift in Sources */,
+				1DFFB0B31458A2A02F80874D /* IncomingFile.swift in Sources */,
+				EB5AE69F550B87629A4B5386 /* LiveActivityController.swift in Sources */,
+				1ECC2E2E6A4453ABFE22F97F /* QuickLogSheet.swift in Sources */,
+				0357EF99977E81A37B50B0E9 /* SettingsView.swift in Sources */,
+				25773A15564FA55A45F70A76 /* SummaryView.swift in Sources */,
+				37DD38583AA3BB4EF66E4DAE /* Theme.swift in Sources */,
+				8E035054749C34B5AE5F32BC /* TimerButton.swift in Sources */,
+				20FA5911292AE473C840FFB9 /* ToggleContractionIntent.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		D3F54FF1574D754751A9E9DF /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				AD7D3266AF44E047EB09F6F5 /* Contraction.swift in Sources */,
+				842E15A1F315EE5DE61B6A17 /* ContractionActivityAttributes.swift in Sources */,
+				BCA4D81E5BDB61A848E83F24 /* ContractionLiveActivity.swift in Sources */,
+				2979B2DF580E4E7E9DCD2E6A /* ContractionStore.swift in Sources */,
+				6E4483E860A99CCC2196FAEC /* Format.swift in Sources */,
+				F76B44699D7D40203246B583 /* LiveActivityController.swift in Sources */,
+				3A4ED476DEE6A4D3F80707F8 /* Theme.swift in Sources */,
+				BA02D43A1A4765133BA50E9D /* ToggleContractionIntent.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		DFF974F1A2A4AD41C92CB68A /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 22062693EF9390EC673A70E8 /* ContractionTractionLiveActivity */;
+			targetProxy = 8BA270F83B318A28E2B060E5 /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
+
+/* Begin XCBuildConfiguration section */
+		5A7663520271E318D7687625 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				CODE_SIGN_STYLE = Automatic;
+				COPY_PHASE_STRIP = NO;
+				CURRENT_PROJECT_VERSION = 1;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				DEVELOPMENT_TEAM = MSXGHATPMF;
+				ENABLE_MODULE_VERIFIER = NO;
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_USER_SCRIPT_SANDBOXING = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
+				MARKETING_VERSION = 1.0;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				MTL_FAST_MATH = YES;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = iphoneos;
+				SWIFT_COMPILATION_MODE = wholemodule;
+				SWIFT_OPTIMIZATION_LEVEL = "-O";
+				SWIFT_STRICT_CONCURRENCY = minimal;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = 1;
+			};
+			name = Release;
+		};
+		5B238639B04FC3FB5F82F2F1 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_ENTITLEMENTS = LiveActivity/LiveActivity.entitlements;
+				INFOPLIST_FILE = LiveActivity/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@executable_path/../../Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = com.jaredjackson.ContractionTraction.LiveActivity;
+				PRODUCT_NAME = ContractionTractionLiveActivity;
+				SDKROOT = iphoneos;
+				SKIP_INSTALL = YES;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Release;
+		};
+		82D49166A1F3EE83A1FBE8FB /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_ENTITLEMENTS = LiveActivity/LiveActivity.entitlements;
+				INFOPLIST_FILE = LiveActivity/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@executable_path/../../Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = com.jaredjackson.ContractionTraction.LiveActivity;
+				PRODUCT_NAME = ContractionTractionLiveActivity;
+				SDKROOT = iphoneos;
+				SKIP_INSTALL = YES;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+		8F7025E18DBF486AAD2BF817 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				CODE_SIGN_STYLE = Automatic;
+				COPY_PHASE_STRIP = NO;
+				CURRENT_PROJECT_VERSION = 1;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				DEVELOPMENT_TEAM = MSXGHATPMF;
+				ENABLE_MODULE_VERIFIER = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
+				ENABLE_USER_SCRIPT_SANDBOXING = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"$(inherited)",
+					"DEBUG=1",
+				);
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
+				MARKETING_VERSION = 1.0;
+				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
+				MTL_FAST_MATH = YES;
+				ONLY_ACTIVE_ARCH = YES;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = iphoneos;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+				SWIFT_STRICT_CONCURRENCY = minimal;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = 1;
+			};
+			name = Debug;
+		};
+		DEE695D09CB782EFA77327DF /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				ASSETCATALOG_COMPILER_INCLUDE_ALL_APPICON_ASSETS = NO;
+				CODE_SIGN_ENTITLEMENTS = App/ContractionTraction.entitlements;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				INFOPLIST_FILE = App/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = com.jaredjackson.ContractionTraction;
+				PRODUCT_NAME = ContractionTraction;
+				SDKROOT = iphoneos;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+		EE4189E404EAA3C9034B29E5 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				ASSETCATALOG_COMPILER_INCLUDE_ALL_APPICON_ASSETS = NO;
+				CODE_SIGN_ENTITLEMENTS = App/ContractionTraction.entitlements;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				INFOPLIST_FILE = App/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = com.jaredjackson.ContractionTraction;
+				PRODUCT_NAME = ContractionTraction;
+				SDKROOT = iphoneos;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		A9A05215D3BE78E12C49184D /* Build configuration list for PBXNativeTarget "ContractionTractionLiveActivity" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				82D49166A1F3EE83A1FBE8FB /* Debug */,
+				5B238639B04FC3FB5F82F2F1 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Debug;
+		};
+		DB3602A09EBD99A6564C4FAE /* Build configuration list for PBXNativeTarget "ContractionTraction" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				DEE695D09CB782EFA77327DF /* Debug */,
+				EE4189E404EAA3C9034B29E5 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Debug;
+		};
+		EADDEDABF62C48B9A2C8389A /* Build configuration list for PBXProject "ContractionTraction" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				8F7025E18DBF486AAD2BF817 /* Debug */,
+				5A7663520271E318D7687625 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Debug;
+		};
+/* End XCConfigurationList section */
+
+/* Begin XCLocalSwiftPackageReference section */
+		9153F0D0F3BCBF6F8DF259A1 /* XCLocalSwiftPackageReference "Packages/ContractionCore" */ = {
+			isa = XCLocalSwiftPackageReference;
+			relativePath = Packages/ContractionCore;
+		};
+/* End XCLocalSwiftPackageReference section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		1D1B3869C4189FC58300B362 /* ContractionCore */ = {
+			isa = XCSwiftPackageProductDependency;
+			productName = ContractionCore;
+		};
+		D9EEAE73307ACFDFB9127031 /* ContractionCore */ = {
+			isa = XCSwiftPackageProductDependency;
+			productName = ContractionCore;
+		};
+/* End XCSwiftPackageProductDependency section */
+	};
+	rootObject = F93C0422B45110136861397D /* Project object */;
+}

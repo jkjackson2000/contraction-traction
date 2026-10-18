@@ -1,0 +1,102 @@
+name: ContractionTraction
+
+options:
+  bundleIdPrefix: com.jaredjackson
+  deploymentTarget:
+    iOS: "17.0"
+  developmentLanguage: en
+  createIntermediateGroups: true
+
+settings:
+  base:
+    DEVELOPMENT_TEAM: MSXGHATPMF
+    CODE_SIGN_STYLE: Automatic
+    MARKETING_VERSION: "1.0"
+    CURRENT_PROJECT_VERSION: "1"
+    SWIFT_VERSION: "5.0"
+    IPHONEOS_DEPLOYMENT_TARGET: "17.0"
+    TARGETED_DEVICE_FAMILY: "1"
+    ENABLE_USER_SCRIPT_SANDBOXING: YES
+    ENABLE_MODULE_VERIFIER: NO
+    SWIFT_STRICT_CONCURRENCY: minimal
+
+packages:
+  ContractionCore:
+    path: Packages/ContractionCore
+
+targets:
+  ContractionTraction:
+    type: application
+    platform: iOS
+    sources:
+      - path: App
+      - path: Shared
+    dependencies:
+      - package: ContractionCore
+      - target: ContractionTractionLiveActivity
+    info:
+      path: App/Info.plist
+      properties:
+        CFBundleDisplayName: Contractions
+        CFBundleShortVersionString: $(MARKETING_VERSION)
+        CFBundleVersion: $(CURRENT_PROJECT_VERSION)
+        # AirDrop / Files / Messages "Open with Contractions" for a shared .txt log.
+        CFBundleDocumentTypes:
+          - CFBundleTypeName: Plain Text
+            CFBundleTypeRole: Viewer
+            LSHandlerRank: Alternate
+            LSItemContentTypes: [public.plain-text]
+        LSSupportsOpeningDocumentsInPlace: false
+        ITSAppUsesNonExemptEncryption: false
+        LSRequiresIPhoneOS: true
+        NSSupportsLiveActivities: true
+        UIApplicationSceneManifest:
+          UIApplicationSupportsMultipleScenes: false
+        UILaunchScreen:
+          UIColorName: LaunchBackground
+        UIRequiredDeviceCapabilities: [arm64]
+        UISupportedInterfaceOrientations: [UIInterfaceOrientationPortrait]
+        UIStatusBarStyle: UIStatusBarStyleDefault
+    entitlements:
+      path: App/ContractionTraction.entitlements
+      properties:
+        com.apple.security.application-groups:
+          - group.com.jaredjackson.ContractionTraction
+    settings:
+      base:
+        PRODUCT_NAME: ContractionTraction
+        PRODUCT_BUNDLE_IDENTIFIER: com.jaredjackson.ContractionTraction
+        ASSETCATALOG_COMPILER_APPICON_NAME: AppIcon
+        ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME: AccentColor
+        ASSETCATALOG_COMPILER_INCLUDE_ALL_APPICON_ASSETS: NO
+    scheme:
+      testTargets: []
+
+  ContractionTractionLiveActivity:
+    type: app-extension
+    platform: iOS
+    sources:
+      - path: LiveActivity
+      - path: Shared
+    dependencies:
+      - package: ContractionCore
+      - sdk: SwiftUI.framework
+      - sdk: WidgetKit.framework
+    info:
+      path: LiveActivity/Info.plist
+      properties:
+        CFBundleDisplayName: Contractions
+        CFBundleShortVersionString: $(MARKETING_VERSION)
+        CFBundleVersion: $(CURRENT_PROJECT_VERSION)
+        NSExtension:
+          NSExtensionPointIdentifier: com.apple.widgetkit-extension
+    entitlements:
+      path: LiveActivity/LiveActivity.entitlements
+      properties:
+        com.apple.security.application-groups:
+          - group.com.jaredjackson.ContractionTraction
+    settings:
+      base:
+        PRODUCT_NAME: ContractionTractionLiveActivity
+        PRODUCT_BUNDLE_IDENTIFIER: com.jaredjackson.ContractionTraction.LiveActivity
+        SKIP_INSTALL: YES
