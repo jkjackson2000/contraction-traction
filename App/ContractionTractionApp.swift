@@ -23,7 +23,11 @@ struct ContractionTractionApp: App {
             .modifier(SaveErrorAlert(store: store))
             .onOpenURL { url in
                 // A .txt log arriving via AirDrop, Files, or Messages.
-                importRequest = ImportRequest(text: IncomingFile.read(url))
+                do {
+                    importRequest = ImportRequest(text: try IncomingFile.read(url))
+                } catch {
+                    importRequest = ImportRequest(text: "", error: error.localizedDescription)
+                }
             }
             .onChange(of: scenePhase) { _, phase in
                 guard phase == .active, store.loadError == nil else { return }
@@ -40,6 +44,12 @@ struct ContractionTractionApp: App {
 struct ImportRequest: Identifiable {
     let id = UUID()
     let text: String
+    let error: String?
+
+    init(text: String, error: String? = nil) {
+        self.text = text
+        self.error = error
+    }
 }
 
 /// Shows `ContractionStore.lastError`. Attached at the root and inside the

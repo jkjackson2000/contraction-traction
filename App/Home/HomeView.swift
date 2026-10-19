@@ -39,7 +39,7 @@ struct HomeView: View {
                 switch sheet {
                 case .quickLog: QuickLogSheet()
                 case .settings: SettingsView()
-                case .importLog(let request): ImportSheet(initialText: request?.text)
+                case .importLog(let request): ImportSheet(initialText: request?.text, initialError: request?.error)
                 case .edit(let record): EditSheet(original: record)
                 }
             }
