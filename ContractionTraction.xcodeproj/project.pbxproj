@@ -38,6 +38,7 @@
 		BCA4D81E5BDB61A848E83F24 /* ContractionLiveActivity.swift in Sources */ = {isa = PBXBuildFile; fileRef = E946256F7848E258019F2862 /* ContractionLiveActivity.swift */; };
 		C55315F8AF1313E7682F9503 /* Format.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B9B90D4916FFEE6B65325CC /* Format.swift */; };
 		DD6D4092CC6D0ED0B3C29518 /* WidgetKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = AE2532A429C9997C8353BADB /* WidgetKit.framework */; };
+		E2039BACBA4C69D22E33C89C /* IncomingFileTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 911D7DB0095B080E0FBFF6A4 /* IncomingFileTests.swift */; };
 		E7AAC27E5AA48480EA1CA903 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 2D04B4679172E08A8D13A67E /* Assets.xcassets */; };
 		EAB12B0E53C8027D5838A0CD /* ContractionCore in Frameworks */ = {isa = PBXBuildFile; productRef = 1D1B3869C4189FC58300B362 /* ContractionCore */; };
 		EB5AE69F550B87629A4B5386 /* LiveActivityController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5212974A05946E56949037DF /* LiveActivityController.swift */; };
@@ -52,6 +53,13 @@
 			proxyType = 1;
 			remoteGlobalIDString = 22062693EF9390EC673A70E8;
 			remoteInfo = ContractionTractionLiveActivity;
+		};
+		DB6827AA6AEB2E5F6F78DB34 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = F93C0422B45110136861397D /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = D7C73C3203094B003DE689BD;
+			remoteInfo = ContractionTraction;
 		};
 /* End PBXContainerItemProxy section */
 
@@ -90,9 +98,11 @@
 		7F05168B954B5D5C802A20D5 /* QuickLogSheet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QuickLogSheet.swift; sourceTree = "<group>"; };
 		85C87678F32E809CDED7223E /* ContractionTraction.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = ContractionTraction.entitlements; sourceTree = "<group>"; };
 		8ED077068EF49E8CC2015225 /* SettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsView.swift; sourceTree = "<group>"; };
+		911D7DB0095B080E0FBFF6A4 /* IncomingFileTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IncomingFileTests.swift; sourceTree = "<group>"; };
 		9A1F478767A67002150A886D /* Contraction.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Contraction.swift; sourceTree = "<group>"; };
 		A3242091E9C92103FF7EFF4D /* SummaryView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SummaryView.swift; sourceTree = "<group>"; };
 		AE2532A429C9997C8353BADB /* WidgetKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = WidgetKit.framework; path = System/Library/Frameworks/WidgetKit.framework; sourceTree = SDKROOT; };
+		B19FFDFAE2FF514DAF28355B /* ContractionTractionTests.xctest */ = {isa = PBXFileReference; includeInIndex = 0; lastKnownFileType = wrapper.cfbundle; path = ContractionTractionTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		B53E93DBA4D79C7315515838 /* LiveActivity.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = LiveActivity.entitlements; sourceTree = "<group>"; };
 		D4C898AEFB5E28C8FFCD8677 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
 		DC4F0B2B8F44B21768A9C5E1 /* Theme.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Theme.swift; sourceTree = "<group>"; };
@@ -195,6 +205,7 @@
 				B47D0265787E1E3674A18AC4 /* LiveActivity */,
 				1CCAD718693FD1988A46A034 /* Packages */,
 				7CA38903B107AE869C80E3F5 /* Shared */,
+				C5EE051B8926E300CCF0CEBC /* Tests */,
 				AA9C2096CB0CC371BA67A630 /* Frameworks */,
 				8BA14F19CA0552EA66072266 /* Products */,
 			);
@@ -219,6 +230,7 @@
 			children = (
 				627868FA8FE3D192B98E661C /* ContractionTraction.app */,
 				20514E8718E1086688EACBD6 /* ContractionTractionLiveActivity.appex */,
+				B19FFDFAE2FF514DAF28355B /* ContractionTractionTests.xctest */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -241,6 +253,14 @@
 				FB67F9D692C9A70DC04CBB84 /* PrivacyInfo.xcprivacy */,
 			);
 			path = LiveActivity;
+			sourceTree = "<group>";
+		};
+		C5EE051B8926E300CCF0CEBC /* Tests */ = {
+			isa = PBXGroup;
+			children = (
+				911D7DB0095B080E0FBFF6A4 /* IncomingFileTests.swift */,
+			);
+			path = Tests;
 			sourceTree = "<group>";
 		};
 		DE00F6BD650423D19A3D6AA1 /* Home */ = {
@@ -277,6 +297,24 @@
 			productReference = 20514E8718E1086688EACBD6 /* ContractionTractionLiveActivity.appex */;
 			productType = "com.apple.product-type.app-extension";
 		};
+		60BC4FFB315BE82B12A3F2B5 /* ContractionTractionTests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = CDB6C3F73443EC302724FC79 /* Build configuration list for PBXNativeTarget "ContractionTractionTests" */;
+			buildPhases = (
+				29F0525682802DD7F3AE98FE /* Sources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				FCF7D4818544B8A134D7F825 /* PBXTargetDependency */,
+			);
+			name = ContractionTractionTests;
+			packageProductDependencies = (
+			);
+			productName = ContractionTractionTests;
+			productReference = B19FFDFAE2FF514DAF28355B /* ContractionTractionTests.xctest */;
+			productType = "com.apple.product-type.bundle.unit-test";
+		};
 		D7C73C3203094B003DE689BD /* ContractionTraction */ = {
 			isa = PBXNativeTarget;
 			buildConfigurationList = DB3602A09EBD99A6564C4FAE /* Build configuration list for PBXNativeTarget "ContractionTraction" */;
@@ -312,6 +350,10 @@
 						DevelopmentTeam = MSXGHATPMF;
 						ProvisioningStyle = Automatic;
 					};
+					60BC4FFB315BE82B12A3F2B5 = {
+						DevelopmentTeam = MSXGHATPMF;
+						ProvisioningStyle = Automatic;
+					};
 					D7C73C3203094B003DE689BD = {
 						DevelopmentTeam = MSXGHATPMF;
 						ProvisioningStyle = Automatic;
@@ -336,6 +378,7 @@
 			projectRoot = "";
 			targets = (
 				D7C73C3203094B003DE689BD /* ContractionTraction */,
+				60BC4FFB315BE82B12A3F2B5 /* ContractionTractionTests */,
 				22062693EF9390EC673A70E8 /* ContractionTractionLiveActivity */,
 			);
 		};
@@ -389,6 +432,14 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		29F0525682802DD7F3AE98FE /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				E2039BACBA4C69D22E33C89C /* IncomingFileTests.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		D3F54FF1574D754751A9E9DF /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -412,9 +463,31 @@
 			target = 22062693EF9390EC673A70E8 /* ContractionTractionLiveActivity */;
 			targetProxy = 8BA270F83B318A28E2B060E5 /* PBXContainerItemProxy */;
 		};
+		FCF7D4818544B8A134D7F825 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = D7C73C3203094B003DE689BD /* ContractionTraction */;
+			targetProxy = DB6827AA6AEB2E5F6F78DB34 /* PBXContainerItemProxy */;
+		};
 /* End PBXTargetDependency section */
 
 /* Begin XCBuildConfiguration section */
+		4BE176FE92E765969432B6EC /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				GENERATE_INFOPLIST_FILE = YES;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = com.jaredjackson.ContractionTraction.Tests;
+				SDKROOT = iphoneos;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/ContractionTraction.app/ContractionTraction";
+			};
+			name = Release;
+		};
 		5A7663520271E318D7687625 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
@@ -512,6 +585,23 @@
 				SDKROOT = iphoneos;
 				SKIP_INSTALL = YES;
 				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+		8D917516ED0B0E5D4CBE9EA3 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				GENERATE_INFOPLIST_FILE = YES;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = com.jaredjackson.ContractionTraction.Tests;
+				SDKROOT = iphoneos;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/ContractionTraction.app/ContractionTraction";
 			};
 			name = Debug;
 		};
@@ -634,6 +724,15 @@
 			buildConfigurations = (
 				82D49166A1F3EE83A1FBE8FB /* Debug */,
 				5B238639B04FC3FB5F82F2F1 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Debug;
+		};
+		CDB6C3F73443EC302724FC79 /* Build configuration list for PBXNativeTarget "ContractionTractionTests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				8D917516ED0B0E5D4CBE9EA3 /* Debug */,
+				4BE176FE92E765969432B6EC /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Debug;

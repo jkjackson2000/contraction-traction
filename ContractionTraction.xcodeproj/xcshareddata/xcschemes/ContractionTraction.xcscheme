@@ -39,6 +39,17 @@
          </BuildableReference>
       </MacroExpansion>
       <Testables>
+         <TestableReference
+            skipped = "NO"
+            parallelizable = "NO">
+            <BuildableReference
+               BuildableIdentifier = "primary"
+               BlueprintIdentifier = "60BC4FFB315BE82B12A3F2B5"
+               BuildableName = "ContractionTractionTests.xctest"
+               BlueprintName = "ContractionTractionTests"
+               ReferencedContainer = "container:ContractionTraction.xcodeproj">
+            </BuildableReference>
+         </TestableReference>
       </Testables>
       <CommandLineArguments>
       </CommandLineArguments>

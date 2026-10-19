@@ -6,6 +6,7 @@ struct ImportSheet: View {
     /// Prefilled text from an opened .txt file; jumps to Review when it
     /// contains at least one entry.
     var initialText: String?
+    var initialError: String? = nil
 
     @Environment(ContractionStore.self) private var store
     @Environment(\.dismiss) private var dismiss
@@ -16,6 +17,7 @@ struct ImportSheet: View {
     @State private var plan: ImportPlan?
     @State private var showReview = false
     @State private var didLoadInitial = false
+    @State private var fileError: String?
 
     var body: some View {
         NavigationStack {
@@ -24,6 +26,12 @@ struct ImportSheet: View {
                     Text("Paste a log shared from Contraction Traction on another phone. You'll review everything before it's added.")
                         .font(.subheadline)
                         .foregroundStyle(.secondary)
+
+                    if let fileError {
+                        Label(fileError, systemImage: "exclamationmark.triangle.fill")
+                            .font(.subheadline)
+                            .foregroundStyle(Theme.contracting)
+                    }
 
                     HStack {
                         PasteButton(payloadType: String.self) { strings in
@@ -118,6 +126,7 @@ struct ImportSheet: View {
                 parseIfNeeded()
             }
             .onAppear(perform: loadInitial)
+            .onChange(of: text) { fileError = nil }
         }
     }
 
@@ -148,6 +157,7 @@ struct ImportSheet: View {
     private func loadInitial() {
         guard !didLoadInitial else { return }
         didLoadInitial = true
+        fileError = initialError
         guard let initialText else { return }
         text = initialText
         parseIfNeeded()

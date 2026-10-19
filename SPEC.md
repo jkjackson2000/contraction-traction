@@ -228,6 +228,8 @@ and the pattern still current. The wording is informational only.
   overlap, approximate tolerance, A→B→A round-trip, notes), the
   stats/interval math, the pattern boundaries, and `QuickLog`.
 - The app builds for the simulator with no warnings in our code.
+- App tests cover shared-file encodings, the 512 KB import limit, and cleanup
+  restricted to successfully read copies in the app's own Documents/Inbox.
 - Manual check on two phones: share through iMessage, paste, review,
   import, and undo. The Live Activity Stop button works from the Dynamic
   Island and the lock screen.
